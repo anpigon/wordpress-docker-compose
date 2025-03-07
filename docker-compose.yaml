@@ -13,6 +13,7 @@ services:
       WORDPRESS_DB_NAME: exampledb
       WORDPRESS_CONFIG_EXTRA: |
         define('FORCE_SSL_ADMIN', true);
+        $_SERVER['HTTPS'] = 'on';
     volumes:
       - wordpress:/var/www/html
 
