@@ -10,17 +10,11 @@ services:
       - 8080:80
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_CONFIG_EXTRA: |
-        define('FORCE_SSL_ADMIN', true);
-        $_SERVER['HTTPS'] = 'on';
+      WORDPRESS_DB_NAME: wordpress
     volumes:
-      - ./config/wp_php.ini:/usr/local/etc/php/conf.d/conf.ini
-      - ./wp-app:/var/www/html # Full wordpress project
-      #- ./plugin-name/trunk/:/var/www/html/wp-content/plugins/plugin-name # Plugin development
-      #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
+      - ./wp-app:/var/www/html
     depends_on:
       - db
     links:
@@ -28,23 +22,17 @@ services:
 
   db:
     image: mysql:8.0 # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
-    # platform: linux/x86_64  # Uncomment if your machine is running on arm (ex: Apple Silicon processor)
     ports:
       - 3306:3306 # change ip if required
-    container_name: db
-    command: [
-        '--character-set-server=utf8mb4',
-        '--collation-server=utf8mb4_unicode_ci'
-    ]
+    container_name: wordpress_db
     restart: always
     environment:
       MYSQL_DATABASE: wordpress
-      MYSQL_USER: root
+      MYSQL_USER: wordpress
       MYSQL_PASSWORD: password
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - ./wp-data:/docker-entrypoint-initdb.d
-      - wordpress_db:/var/lib/mysql
+      - wordpress_data:/var/lib/mysql
 
 volumes:
-  wordpress_db:
+  wordpress_data:
