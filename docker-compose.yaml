@@ -27,10 +27,10 @@ services:
       - db
 
   db:
-    image: mysql:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
+    image: mysql:8.0 # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
     # platform: linux/x86_64  # Uncomment if your machine is running on arm (ex: Apple Silicon processor)
     ports:
-      - ${IP}:3306:3306 # change ip if required
+      - 3306:3306 # change ip if required
     container_name: db
     command: [
         '--character-set-server=utf8mb4',
